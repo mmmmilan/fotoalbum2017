@@ -1,0 +1,98 @@
+﻿@model WebFotoAlbum3.Models.Slika
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<form action="/Slike/Create" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label for="TextNaslov" class="control-label col-md-2">Upisite naziv</label>
+            <div class="col-md-10">
+                <input id="TextNaslov" type="text" name="Naslov" class="form-control" />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="file1" class="control-label col-md-2">Odaberite sliku</label>
+            <div class="col-md-10">
+                <input id="File1" type="file" name="poslataSlika" onchange="ucitajSliku()" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="img1" class="control-label col-md-2">Odabrana slika </label>
+            <div class="col-md-10">
+                <img id="img1" width="200" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="TextOpis" class="control-label col-md-2">Opis </label>
+            <div class="col-md-10">
+                <textarea id="TextOpis" rows="2" cols="20" name="Opis" class="form-control"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="TextDatum" class="control-label col-md-2">Datum kreiranja slike</label>
+            <div class="col-md-10">
+                <input id="TextDatum" type="text" name="DatumKreiranja" value="@DateTime.Now" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="TextKorisnik" class="control-label col-md-2">Korisnik</label>
+            <div class="col-md-10">
+                <input id="TextKorisnik" type="text" name="Korisnik" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Ubaci" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+<div>
+   <a href="/Slike/Index">Lista slika</a>
+      
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function ucitajSliku() {
+            var fajlElem = document.getElementById("File1");
+
+            if (fajlElem.files.length != 0 && fajlElem.files[0].type.match(/image.*/)) {
+                var reader = new FileReader();
+                reader.readAsDataURL(fajlElem.files[0]);
+
+                reader.onload = function (e) {
+                    var imgElem = document.getElementById("img1");
+                    imgElem.src = reader.result;
+                };
+
+                reader.onerror = function (e) {
+                    alert("ova slika nece da se ucita");
+                };
+            }
+            else {
+                alert("ucitajte sliku");
+            }
+        }
+
+    </script>
+}
